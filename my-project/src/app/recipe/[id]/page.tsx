@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'; 
+
 
 import Image from "next/image";
 
@@ -26,7 +26,7 @@ interface PageProps {
 
 export default async function RecipePage({ params }: PageProps) {
     const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`, { cache: "no-store" }
+        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
     );
     if (!response.ok) {
         throw new Error("failed to fetch recipes");

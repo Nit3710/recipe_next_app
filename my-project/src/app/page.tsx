@@ -80,11 +80,11 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {meals?.map((meal) => (
             <RecipeCard
-            key={meal.idMeal}
-            meal={{ ...meal, isFavourite: favorites.includes(meal.idMeal) }}
-            onToggleFavorite={toggleFavorite}
-          />
-          
+              key={meal.idMeal}
+              meal={{ ...meal, isFavourite: favorites.includes(meal.idMeal) }}
+              onToggleFavorite={toggleFavorite}
+            />
+
           ))}
 
         </div>
