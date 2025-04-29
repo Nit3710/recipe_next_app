@@ -18,13 +18,11 @@ interface RecipeResponse {
     meals: RecipeDetail[];
 }
 
-interface PageProps {
-    params: {
-        id: string;
-    };
-}
-
-export default async function RecipePage({ params }: PageProps) {
+export default async function RecipePage({
+    params,
+  }: {
+    params: { id: string };
+  }) {
     const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
     );
