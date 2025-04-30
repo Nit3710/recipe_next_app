@@ -18,13 +18,14 @@ interface RecipeResponse {
     meals: RecipeDetail[];
 }
 
+
 export default async function RecipePage({
     params,
-  }: {
-    params: { id: string };
-  }) {
+}: {
+    params: { id: string }
+}) {
     const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`,{ cache: "no-store" }
+        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`, { cache: "no-store" }
     );
     if (!response.ok) {
         throw new Error("failed to fetch recipes");
