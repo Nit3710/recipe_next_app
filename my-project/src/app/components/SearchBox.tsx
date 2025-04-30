@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
@@ -19,28 +19,30 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full px-4 sm:px-0 sm:max-w-2xl mx-auto mb-8 sm:mb-12">
+    <form onSubmit={handleSubmit} className="w-full px-4 sm:px-0 sm:max-w-2xl mx-auto mb-6 sm:mb-12">
       <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-500 rounded-lg sm:rounded-xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity"></div>
-        
-        <div className="relative flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
+        {/* Background blur layer */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-500 rounded-xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
+
+        {/* Input + Button */}
+        <div className="relative flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden gap-2 sm:gap-0 p-2">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search recipes..."
-            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-transparent outline-none text-base sm:text-lg 
-                     text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-4 py-3 sm:py-4 bg-transparent outline-none text-base sm:text-lg 
+                       text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
           />
           <button
             type="submit"
             disabled={isLoading || !query.trim()}
-            className="w-full sm:w-auto px-4 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-teal-500 
-                     text-white font-medium text-base sm:text-lg hover:opacity-90 transition-opacity 
-                     disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-4 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-blue-600 to-teal-500 
+                       text-white font-medium text-base sm:text-lg hover:opacity-90 transition-opacity 
+                       disabled:opacity-50 flex items-center justify-center gap-2 rounded-md sm:rounded-none sm:rounded-r-xl"
           >
             <FiSearch className="w-5 h-5" />
-            <span className="sm:inline hidden">
+            <span className="hidden sm:inline">
               {isLoading ? 'Searching...' : 'Search'}
             </span>
           </button>
