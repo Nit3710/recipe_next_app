@@ -1,6 +1,7 @@
-
+"use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface RecipeDetail {
     idMeal: string;
@@ -18,27 +19,62 @@ interface RecipeResponse {
     meals: RecipeDetail[];
 }
 
-type RecipeProps={
-    params:Promise<{id:string}>
-}
+type RecipeProps = {
+    params: { id: string }; // ✅ Fixed type
+};
 
-export default async function RecipePage({
-    params,
-}:RecipeProps) {
-    const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`, { cache: "no-store" }
+export default function RecipePage({ params }: RecipeProps) {
+    const [ingredients, setIngredients] = useState<any[]>([]);
+    const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                setLoading(true);
+                const response = await fetch(
+                    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`,
+                    { cache: "no-store" }
+                );
+                if (!response.ok) {
+                    throw new Error("Failed to fetch recipe");
+                }
+                const data: RecipeResponse = await response.json();
+                const r = data.meals[0];
+                setRecipe(r);
+
+                const i = Object.keys(r)
+                    .filter((key) => key.startsWith("strIngredient") && r[key])
+                    .map((key, index) => ({
+                        ingredient: r[key],
+                        measure: r[`strMeasure${index + 1}`],
+                    }));
+                setIngredients(i);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
+    }, [params.id]);
+
+    if (loading || !recipe) return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
+                    <div className="flex flex-col items-center">
+                        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+                        <div className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+                            Loading Recipe...
+                        </div>
+                        <p className="text-gray-500 dark:text-gray-400 mt-2 text-center">
+                            Preparing something delicious
+                        </p>
+                    </div>
+                </div>
+            </div>
     );
-    if (!response.ok) {
-        throw new Error("failed to fetch recipes");
-    }
-    const data: RecipeResponse = await response.json();
-    const recipe = data.meals[0];
-    const ingredients = Object.keys(recipe)
-        .filter((key) => key.startsWith("strIngredient") && recipe[key])
-        .map((key, index) => ({
-            ingredient: recipe[key],
-            measure: recipe[`strMeasure${index + 1}`],
-        }));
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
