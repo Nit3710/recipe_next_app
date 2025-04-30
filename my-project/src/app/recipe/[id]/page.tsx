@@ -18,12 +18,13 @@ interface RecipeResponse {
     meals: RecipeDetail[];
 }
 
+type RecipeProps={
+    params:Promise<{id:string}>
+}
 
 export default async function RecipePage({
     params,
-}: {
-    params: Promise<{ id: string }>
-}) {
+}:RecipeProps) {
     const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`, { cache: "no-store" }
     );
