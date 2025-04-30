@@ -24,6 +24,7 @@ type RecipeProps = {
 };
 
 export default function RecipePage({ params }: RecipeProps) {
+    const { id } = params;
     const [ingredients, setIngredients] = useState<unknown[]>([]);
     const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -32,8 +33,9 @@ export default function RecipePage({ params }: RecipeProps) {
         async function fetchData() {
             try {
                 setLoading(true);
+
                 const response = await fetch(
-                    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`,
+                    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
                     { cache: "no-store" }
                 );
                 if (!response.ok) {
@@ -58,22 +60,22 @@ export default function RecipePage({ params }: RecipeProps) {
         }
 
         fetchData();
-    }, [params.id]);
+    }, []);
 
     if (loading || !recipe) return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
-                    <div className="flex flex-col items-center">
-                        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
-                        <div className="text-xl font-semibold text-gray-700 dark:text-gray-200">
-                            Loading Recipe...
-                        </div>
-                        <p className="text-gray-500 dark:text-gray-400 mt-2 text-center">
-                            Preparing something delicious
-                        </p>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl">
+                <div className="flex flex-col items-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mb-4"></div>
+                    <div className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+                        Loading Recipe...
                     </div>
+                    <p className="text-gray-500 dark:text-gray-400 mt-2 text-center">
+                        Preparing something delicious
+                    </p>
                 </div>
             </div>
+        </div>
     );
 
     return (
