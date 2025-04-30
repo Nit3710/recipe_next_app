@@ -1,7 +1,7 @@
-"use client";
+//"use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { PageProps } from "../../../../.next/types/app/layout";
 
 interface RecipeDetail {
     idMeal: string;
@@ -19,48 +19,31 @@ interface RecipeResponse {
     meals: RecipeDetail[];
 }
 
-type RecipeProps = {
-    params: { id: string };
-};
+// type RecipeProps = {
+//     params: { id: string };
+// };
 
-export default function RecipePage({ params }: RecipeProps) {
-    const { id } = params;
-    const [ingredients, setIngredients] = useState<unknown[]>([]);
-    const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+export default async function RecipePage({ params }: PageProps) {
+    let loading = true;
+    const { id } = await params;
+    const response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
+        { cache: "no-store" }
+    );
+    if (!response.ok) {
+        throw new Error("Failed to fetch recipe");
+    }
+    const data: RecipeResponse = await response.json();
+    const recipe = data.meals[0];
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                setLoading(true);
+    const ingredients = Object.keys(recipe)
+        .filter((key) => key.startsWith("strIngredient") && recipe[key])
+        .map((key, index) => ({
+            ingredient: recipe[key],
+            measure: recipe[`strMeasure${index + 1}`],
+        }));
+    loading = false;
 
-                const response = await fetch(
-                    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
-                    { cache: "no-store" }
-                );
-                if (!response.ok) {
-                    throw new Error("Failed to fetch recipe");
-                }
-                const data: RecipeResponse = await response.json();
-                const r = data.meals[0];
-                setRecipe(r);
-
-                const i = Object.keys(r)
-                    .filter((key) => key.startsWith("strIngredient") && r[key])
-                    .map((key, index) => ({
-                        ingredient: r[key],
-                        measure: r[`strMeasure${index + 1}`],
-                    }));
-                setIngredients(i);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchData();
-    }, []);
 
     if (loading || !recipe) return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
