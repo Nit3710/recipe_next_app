@@ -20,11 +20,11 @@ interface RecipeResponse {
 }
 
 type RecipeProps = {
-    params: { id: string }; // ✅ Fixed type
+    params: { id: string };
 };
 
 export default function RecipePage({ params }: RecipeProps) {
-    const [ingredients, setIngredients] = useState<any[]>([]);
+    const [ingredients, setIngredients] = useState<unknown[]>([]);
     const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
