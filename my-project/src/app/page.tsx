@@ -6,6 +6,7 @@ interface Meal {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
+  strInstructions: string;
   isFavourite?: boolean;
 }
 import SearchBox from './components/SearchBox';
