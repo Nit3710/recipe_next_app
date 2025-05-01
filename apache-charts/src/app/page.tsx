@@ -11,7 +11,7 @@ const DynamicChartComponent: React.FC = () => {
   const [chartType, setChartType] = useState<ChartType>('pie');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [data, setData] = useState<{name:string;value:number}[]>([
+  const [data, setData] = useState<{ name: string; value: number }[]>([
     { name: 'Product A', value: 200 },
     { name: 'Product B', value: 150 },
     { name: 'Product C', value: 300 },
@@ -155,7 +155,7 @@ const DynamicChartComponent: React.FC = () => {
               type: 'bar',
               barWidth: '60%',
               itemStyle: {
-                color: function (params: {value:number}) {
+                color: function (params: { value: number }) {
                   return params.value < 0 ? '#FF6347' : '#32CD32';
                 },
               },
@@ -237,7 +237,7 @@ const DynamicChartComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen w-full ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`min-h-screen w-full ${isDarkMode ? 'dark bg-gray-900 text-white' : 'text-gray-900'}`}>
       <div className="mx-auto px-4 py-6 w-full max-w-6xl flex flex-col gap-6">
 
 
@@ -248,9 +248,11 @@ const DynamicChartComponent: React.FC = () => {
             <select
               value={chartType}
               onChange={(e) => setChartType(e.target.value as ChartType)}
-              className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
-                       bg-white dark:bg-gray-800 text-gray-900 dark:text-white 
-                       shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full sm:w-auto px-4 py-2 rounded-lg border 
+              ${isDarkMode
+                  ? 'border-gray-600 bg-gray-800 text-white'
+                  : 'border-gray-300 bg-white text-gray-700'} 
+              shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
             >
               {[
                 { value: 'pie', label: 'Pie Chart' },
@@ -263,7 +265,9 @@ const DynamicChartComponent: React.FC = () => {
                 <option
                   key={opt.value}
                   value={opt.value}
-                  className="text-gray-900 dark:text-white bg-white dark:bg-gray-800"
+                  className={`${isDarkMode
+                    ? 'text-white bg-gray-800'
+                    : 'text-gray-700 bg-white'}`}
                 >
                   {opt.label}
                 </option>
@@ -296,7 +300,7 @@ const DynamicChartComponent: React.FC = () => {
           key={isDarkMode ? 'dark' : 'light'}
           className={`relative w-full rounded-xl shadow-lg border 
                     border-gray-200 dark:border-gray-700 
-                    ${isFullscreen ? 'fixed inset-0 z-50 m-0 p-4 bg-white dark:bg-gray-900' : 'bg-white dark:bg-gray-800 h-[400px]'}`}
+                    ${isFullscreen ? 'fixed inset-0 z-50 m-0 p-4 bg-white dark:bg-gray-900' : 'bg-white h-[400px]'}`}
           style={{ height: isFullscreen ? '100vh' : undefined }}
         />
       </div>
