@@ -11,7 +11,7 @@ const DynamicChartComponent: React.FC = () => {
   const [chartType, setChartType] = useState<ChartType>('pie');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [data, setData] = useState<any[]>([
+  const [data, setData] = useState<{name:string;value:number}[]>([
     { name: 'Product A', value: 200 },
     { name: 'Product B', value: 150 },
     { name: 'Product C', value: 300 },
@@ -38,13 +38,13 @@ const DynamicChartComponent: React.FC = () => {
 
   useEffect(() => {
     if (!chartRef.current) return;
-  
+
     if (chartInstance.current) {
       chartInstance.current.dispose();
     }
-    const theme = isDarkMode ? 'dark' : undefined; 
+    const theme = isDarkMode ? 'dark' : undefined;
     chartInstance.current = echarts.init(chartRef.current, theme);
-  
+
     const option = getChartOption(chartType, data);
     chartInstance.current.setOption(option);
   }, [isDarkMode]);
@@ -56,7 +56,7 @@ const DynamicChartComponent: React.FC = () => {
     }
   }, [chartType, data]);
 
-  const getChartOption = (type: ChartType, data: any[]) => {
+  const getChartOption = (type: ChartType, data: { name: string; value: number }[]) => {
     switch (type) {
       case 'pie':
         return {
@@ -155,7 +155,7 @@ const DynamicChartComponent: React.FC = () => {
               type: 'bar',
               barWidth: '60%',
               itemStyle: {
-                color: function (params: any) {
+                color: function (params: {value:number}) {
                   return params.value < 0 ? '#FF6347' : '#32CD32';
                 },
               },
