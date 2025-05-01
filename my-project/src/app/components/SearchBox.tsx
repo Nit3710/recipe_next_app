@@ -21,10 +21,7 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
   return (
     <form onSubmit={handleSubmit} className="w-full px-4 sm:px-0 sm:max-w-2xl mx-auto mb-6 sm:mb-12">
       <div className="relative group">
-        {/* Background blur layer */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-500 rounded-xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
-
-        {/* Input + Button */}
         <div className="relative flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden gap-2 sm:gap-0 p-2">
           <input
             type="text"
