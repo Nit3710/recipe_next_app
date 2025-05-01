@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import type { ECharts } from 'echarts';
 import { FiMaximize2, FiMinimize2 } from 'react-icons/fi';
+import {MdLightMode, MdDarkMode} from 'react-icons/md';
 
 type ChartType = 'pie' | 'bar' | 'line' | 'negative-bar' | 'doughnut' | 'scrollable-pie';
 
@@ -30,7 +31,7 @@ const DynamicChartComponent: React.FC = () => {
   const generateRandomData = () => {
     return [
       { name: 'Product A', value: Math.floor(Math.random() * 500) },
-      { name: 'Product B', value: Math.floor(Math.random() * 500) },
+      { name: 'Product B', value: Math.floor(Math.random() * (-10)+200) },
       { name: 'Product C', value: Math.floor(Math.random() * 500) },
       { name: 'Product D', value: Math.floor(Math.random() * 500) },
     ];
@@ -168,6 +169,9 @@ const DynamicChartComponent: React.FC = () => {
             text: 'Sales Distribution (Doughnut)',
             subtext: 'Real-Time Data',
             left: 'center',
+            textStyle: {
+              color: '#000011',
+            },
           },
           tooltip: {
             trigger: 'item',
@@ -282,7 +286,7 @@ const DynamicChartComponent: React.FC = () => {
                        hover:bg-gray-200 dark:hover:bg-gray-700 transition"
               title="Toggle Theme"
             >
-              {isDarkMode ? '🌞' : '🌙'}
+              {isDarkMode ? <MdLightMode/> : <MdDarkMode/>}
             </button>
             <button
               onClick={toggleFullscreen}
@@ -299,7 +303,7 @@ const DynamicChartComponent: React.FC = () => {
           ref={chartRef}
           key={isDarkMode ? 'dark' : 'light'}
           className={`relative w-full rounded-xl shadow-lg border 
-                    border-gray-200 dark:border-gray-700 
+                    border-gray-200 dark:border-gray-700
                     ${isFullscreen ? 'fixed inset-0 z-50 m-0 p-4 bg-white dark:bg-gray-900' : 'bg-white h-[400px]'}`}
           style={{ height: isFullscreen ? '100vh' : undefined }}
         />
