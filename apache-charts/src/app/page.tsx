@@ -11,7 +11,17 @@ type ChartType = 'pie' | 'bar' | 'line' | 'negative-bar' | 'doughnut' | 'scrolla
 const DynamicChartComponent: React.FC = () => {
   const [chartType, setChartType] = useState<ChartType>('pie');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode !== null) {
+      setIsDarkMode(JSON.parse(savedMode));
+    }
+  }, []);
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
   const [data, setData] = useState<{ name: string; value: number }[]>([
     { name: 'Product A', value: 200 },
     { name: 'Product B', value: 150 },
@@ -31,7 +41,7 @@ const DynamicChartComponent: React.FC = () => {
   const generateRandomData = () => {
     return [
       { name: 'Product A', value: Math.floor(Math.random() * 500) },
-      { name: 'Product B', value: Math.floor(Math.random() * (-10)+200) },
+      { name: 'Product B', value: Math.floor(Math.random() * 500) },
       { name: 'Product C', value: Math.floor(Math.random() * 500) },
       { name: 'Product D', value: Math.floor(Math.random() * 500) },
     ];
